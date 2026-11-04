@@ -1,0 +1,416 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  REPORTER
+  EDITOR_L1
+  EDITOR_L2
+  ADMIN
+}
+
+enum ArticleStatus {
+  DRAFT
+  PENDING_L1
+  IN_REVIEW_L1
+  PENDING_L2
+  IN_REVIEW_L2
+  RETURNED
+  SCHEDULED
+  PUBLISHED
+  UNPUBLISHED
+  REJECTED
+  ARCHIVED
+}
+
+enum ArticleType {
+  NEWS
+  PHOTO_STORY
+  GRAPHIC
+  MEGASTORY
+  EXTERNAL
+}
+
+enum CategoryType {
+  NEWS
+  PHOTO
+  FEED
+}
+
+enum Locale {
+  vi
+  en
+}
+
+model User {
+  id                 String              @id @default(cuid())
+  email              String              @unique
+  fullName           String
+  passwordHash       String
+  roles              Role[]
+  isActive           Boolean             @default(true)
+  mustChangePassword Boolean             @default(true)
+  require2fa         Boolean             @default(false)
+  totpSecret         String? // mã hóa AES-GCM bằng APP_ENCRYPTION_KEY
+  totpEnabled        Boolean             @default(false)
+  backupCodes        String[] // đã băm
+  failedLoginCount   Int                 @default(0)
+  lockedUntil        DateTime?
+  lastLoginAt        DateTime?
+  emailNotify        Boolean             @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  sessions           Session[]
+  categoryScopes     UserCategoryScope[]
+  articles           Article[]           @relation("ArticleAuthor")
+  l1Reviewed         Article[]           @relation("ArticleL1Reviewer")
+  l2Reviewed         Article[]           @relation("ArticleL2Reviewer")
+  comments           ArticleComment[]
+  statusLogs         ArticleStatusLog[]
+  revisions          ArticleRevision[]
+  notifications      Notification[]
+}
+
+model Session {
+  id           String    @id @default(cuid())
+  sessionToken String    @unique // sha256 của token trong cookie
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+  lastActiveAt DateTime  @default(now())
+  // Phiên "chờ 2FA": đã qua mật khẩu nhưng chưa nhập TOTP
+  pending2fa   Boolean   @default(false)
+  ip           String?
+  userAgent    String?
+  createdAt    DateTime  @default(now())
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+/// `id` là khóa nội bộ; `publicId` là số xuất hiện trên URL (bảng mục 3.1).
+/// Tách hai cột vì ID công khai bị trùng giữa các nhóm (VD Văn hóa = 1, Trong nước = 1).
+model Category {
+  id         Int                 @id @default(autoincrement())
+  publicId   Int
+  slug       String
+  name       String
+  type       CategoryType
+  locale     Locale              @default(vi)
+  parentId   Int?
+  order      Int                 @default(0)
+  showInMenu Boolean             @default(true)
+  footerCol  Int?
+  isActive   Boolean             @default(true)
+  scopes     UserCategoryScope[]
+  primaryOf  Article[]           @relation("ArticlePrimaryCategory")
+  articles   ArticleCategory[]
+
+  @@unique([slug, locale])
+  @@unique([type, publicId, locale])
+}
+
+model UserCategoryScope {
+  userId     String
+  categoryId Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([userId, categoryId])
+}
+
+model Source {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  slug     String    @unique
+  homepage String?
+  logoUrl  String?
+  articles Article[]
+}
+
+model Article {
+  id             Int                @id @default(autoincrement())
+  type           ArticleType
+  status         ArticleStatus      @default(DRAFT)
+  version        Int                @default(1)
+  locale         Locale             @default(vi)
+  title          String
+  slug           String
+  sapo           String?
+  contentJson    Json?
+  contentHtml    String?
+  externalUrl    String?
+  coverMediaId   String?
+  primaryCatId   Int
+  sourceId       Int
+  authorId       String
+  authorName     String?
+  isUrgent       Boolean            @default(false)
+  isPinned       Boolean            @default(false)
+  seoTitle       String?
+  seoDescription String?
+  correctionNote String?
+  correctedAt    DateTime?
+  submittedAt    DateTime?
+  l1ReviewerId   String?
+  l1ApprovedAt   DateTime?
+  l2ReviewerId   String?
+  l2ApprovedAt   DateTime?
+  holderId       String? // người đang nhận duyệt (IN_REVIEW_*)
+  scheduledAt    DateTime?
+  publishedAt    DateTime?
+  unpublishedAt  DateTime?
+  viewCount      Int                @default(0)
+  searchVector   Unsupported("tsvector")?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  author         User               @relation("ArticleAuthor", fields: [authorId], references: [id])
+  l1Reviewer     User?              @relation("ArticleL1Reviewer", fields: [l1ReviewerId], references: [id])
+  l2Reviewer     User?              @relation("ArticleL2Reviewer", fields: [l2ReviewerId], references: [id])
+  primaryCat     Category           @relation("ArticlePrimaryCategory", fields: [primaryCatId], references: [id])
+  source         Source             @relation(fields: [sourceId], references: [id])
+  cover          Media?             @relation(fields: [coverMediaId], references: [id])
+  categories     ArticleCategory[]
+  tags           ArticleTag[]
+  photos         ArticlePhoto[]
+  revisions      ArticleRevision[]
+  statusLogs     ArticleStatusLog[]
+  comments       ArticleComment[]
+  topics         ArticleTopic[]
+  dailyViews     ArticleDailyView[]
+
+  @@unique([slug, locale])
+  @@index([status, publishedAt])
+  @@index([primaryCatId, status, publishedAt])
+}
+
+model ArticleCategory {
+  articleId  Int
+  categoryId Int
+  article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, categoryId])
+}
+
+model Tag {
+  id       Int          @id @default(autoincrement())
+  name     String       @unique
+  slug     String       @unique
+  articles ArticleTag[]
+}
+
+model ArticleTag {
+  articleId Int
+  tagId     Int
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+}
+
+model Media {
+  id           String         @id @default(cuid())
+  key          String         @unique
+  mime         String
+  width        Int
+  height       Int
+  sizeBytes    Int
+  caption      String?
+  alt          String?
+  photographer String?
+  uploadedById String
+  createdAt    DateTime       @default(now())
+  covers       Article[]
+  photos       ArticlePhoto[]
+  ads          Ad[]
+}
+
+model ArticlePhoto {
+  id        String    @id @default(cuid())
+  articleId Int
+  mediaId   String
+  caption   String
+  order     Int
+  takenAt   DateTime?
+  article   Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  media     Media     @relation(fields: [mediaId], references: [id])
+}
+
+model ArticleRevision {
+  id           String        @id @default(cuid())
+  articleId    Int
+  version      Int
+  snapshot     Json
+  editorId     String
+  statusAtSave ArticleStatus
+  note         String?
+  createdAt    DateTime      @default(now())
+  article      Article       @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  editor       User          @relation(fields: [editorId], references: [id])
+
+  @@unique([articleId, version])
+}
+
+model ArticleStatusLog {
+  id         String        @id @default(cuid())
+  articleId  Int
+  fromStatus ArticleStatus
+  toStatus   ArticleStatus
+  action     String
+  actorId    String
+  reason     String?
+  version    Int           @default(1)
+  createdAt  DateTime      @default(now())
+  article    Article       @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  actor      User          @relation(fields: [actorId], references: [id])
+
+  @@index([articleId, createdAt])
+}
+
+model ArticleComment {
+  id        String   @id @default(cuid())
+  articleId Int
+  authorId  String
+  body      String
+  kind      String   @default("COMMENT") // COMMENT | RETURN_REASON | REJECT_REASON | UNPUBLISH_REASON
+  createdAt DateTime @default(now())
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+model ArticleDailyView {
+  articleId Int
+  day       DateTime @db.Date
+  count     Int      @default(0)
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, day])
+  @@index([day])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String?
+  metadata   Json?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+}
+
+model Topic {
+  id         Int            @id
+  slug       String         @unique
+  name       String
+  bannerUrl  String?
+  isFeatured Boolean        @default(false)
+  order      Int            @default(0)
+  isActive   Boolean        @default(true)
+  articles   ArticleTopic[]
+}
+
+model ArticleTopic {
+  articleId Int
+  topicId   Int
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  topic     Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, topicId])
+}
+
+model Partner {
+  id       Int     @id @default(autoincrement())
+  name     String
+  logoUrl  String
+  url      String
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+}
+
+enum AdPosition {
+  LEFT
+  RIGHT
+  POPUP
+}
+
+/** Tần suất hiện popup với mỗi người xem. */
+enum AdFrequency {
+  EVERY_PAGE
+  SESSION
+  DAILY
+}
+
+model Ad {
+  id          Int         @id @default(autoincrement())
+  name        String
+  position    AdPosition
+  mediaId     String
+  media       Media       @relation(fields: [mediaId], references: [id])
+  linkUrl     String?
+  openNewTab  Boolean     @default(true)
+  homeOnly    Boolean     @default(false)
+  frequency   AdFrequency @default(SESSION)
+  startAt     DateTime?
+  endAt       DateTime?
+  isActive    Boolean     @default(true)
+  order       Int         @default(0)
+  clicks      Int         @default(0)
+  createdById String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([position, isActive, order])
+}
+
+model HomeSlot {
+  key         String   @id
+  articleIds  Int[]
+  updatedById String
+  updatedAt   DateTime @updatedAt
+}
+
+model StaticPage {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  contentHtml String
+  updatedAt   DateTime @updatedAt
+}
+
+/// Thay thế Redis khi chạy không có Redis: khóa biên tập, rate-limit.
+model KvEntry {
+  key       String   @id
+  value     String
+  expiresAt DateTime
+}
