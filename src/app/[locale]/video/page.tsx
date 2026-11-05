@@ -17,10 +17,10 @@ export default async function VideoPage({ params }: Props) {
   return (
     <div>
       <Breadcrumb items={[{ label: t.home, href: `/${locale}` }, { label: t.video }]} />
-      <h1 className="mb-5 border-b-2 border-brand pb-2 text-2xl font-bold text-brand sm:text-3xl">{t.video}</h1>
-      <div className="flex flex-col items-center gap-4 rounded border border-dashed border-gray-300 bg-gray-50 px-4 py-16 text-center">
+      <h1 className="mb-5 text-[28px] font-bold leading-tight tracking-tight text-ink sm:text-[34px]">{t.video}</h1>
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-4 py-16 text-center">
         <svg width="56" height="56" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="11" fill="#b3121b" />
+          <circle cx="12" cy="12" r="11" fill="#1A5FE6" />
           <path d="M10 8l6 4-6 4z" fill="#fff" />
         </svg>
         <p className="text-ink-soft">{t.updating}</p>

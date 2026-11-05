@@ -59,3 +59,13 @@ Ghi lại những chỗ đặc tả chưa rõ hoặc phải điều chỉnh khi 
 
 ## URL
 - Không dùng dấu `/` cuối (`/vi/tin-tuc/chinh-tri-11`) để thống nhất với Next.js; bài viết vẫn theo mẫu `.../{slug}-{id}.html`.
+
+## Giao diện theo design system Chợ Tuyển Dụng v2.3 (thay bộ màu đỏ cũ)
+- Theo yêu cầu, áp dụng design system tại `D:\Dev\Chotuyendung-System` (token `ds-tokens.css`, `ds-candidate-tokens.css`, ngôn ngữ Jobie cho Admin) cho cả trang công khai và CMS. **Giữ nguyên** tên, logo chữ "TT", cấu trúc trang, nội dung của Tin Tức Việt Nam; chỉ thay phần trình bày. Không nạp CSS/JS của design system vào dự án — các giá trị được chép thành token.
+- Token đặt ở hai nơi: biến CSS `--ds-*` trong `src/app/globals.css` và ánh xạ sang Tailwind trong `tailwind.config.ts` (`brand` = xanh logo #1A5FE6, `accent` = cam #FF8A3D chỉ cho CTA/nhãn khẩn, `ink` navy, `canvas`, `hairline`, `navy`; `gray` = bảng slate). Bo góc, bóng, gradient (`bg-grad-primary`, `bg-grad-accent`, `bg-grad-navy`, `bg-grad-duo`…) ghi đè thang mặc định của Tailwind, nên lớp `rounded`, `rounded-lg`, `shadow-sm`… đã có sẵn trong mã tự theo thang của design system.
+- Font: Be Vietnam Pro cho toàn sản phẩm, nạp bằng `next/font/google` (tự host lúc build, không vướng CSP). `font-serif` cũ trỏ về cùng họ chữ vì design system chỉ dùng một họ.
+- Thành phần dùng chung trong `globals.css`: `.ds-btn` (viên thuốc gradient, `--accent/--outline/--ghost/--danger/--sm/--lg`), `.ds-badge`, `.ds-chip` (tab dạng chip, dùng `aria-selected`), `.ds-card`, `.ds-card--hover`, `.ds-card--dash`; ô nhập chuẩn Jobie Field (viền #CFD8EA, bo 12px, focus #0061FC + vòng 4px, 16px trên điện thoại) áp ở `@layer base` cho mọi input/select/textarea. `btnCls` của CMS trỏ sang `.ds-btn`.
+- Quy tắc chữ: bỏ toàn bộ `uppercase` ở tiêu đề/nhãn (giữ HOA cho từ viết tắt như KHẨN, RSS); tiêu đề khối có vạch 2 màu logo (`DuoBar`, `sectionHeadingCls`); số liệu `tabular-nums`; CTA dùng "→".
+- CMS theo Jobie: sidebar gradient navy, mục đang chọn là "tab" nền canvas khuyết vào nội dung; header nền canvas; thẻ KPI màu đặc; bảng trong `.ds-card--dash`; trang đăng nhập nền gradient navy. Màu trạng thái bài lấy từ nhóm màu ngữ nghĩa của design system.
+- Chưa áp dụng: bộ icon Phosphor (giữ SVG nội tuyến hiện có để không thêm phụ thuộc/CDN), lịch chọn ngày và menu chọn kiểu iOS (cần JS riêng của design system), thang chữ điện thoại tự động `ds-mobile-type.js`.
+- Biểu tượng logo vẽ bằng màu đặc + lớp sáng thay cho `<linearGradient id>`: logo xuất hiện nhiều lần (một bản bị ẩn trên mobile), id trùng làm gradient biến mất.

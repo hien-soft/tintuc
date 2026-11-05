@@ -21,7 +21,7 @@ interface Props {
 
 export function PreviewBanner({ locale }: { locale: PublicLocale }) {
   return (
-    <div role="status" className="mb-4 rounded border border-amber-300 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-900">
+    <div role="status" className="mb-4 rounded-md border border-[#F5D58A] bg-[#FFF5DF] px-4 py-3 text-sm font-semibold text-[#9A6400]">
       {dict(locale).preview}
     </div>
   );
@@ -85,7 +85,7 @@ export function ArticleView({ article, locale, preview = false, related = [], sa
         )}
 
         {article.type === "EXTERNAL" && article.externalUrl && (
-          <p className="my-4 rounded border border-gray-200 bg-gray-50 p-3 text-sm">
+          <p className="my-5 rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm">
             {t.external}:{" "}
             <a href={article.externalUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand underline">
               {t.readOriginal}
@@ -116,7 +116,7 @@ export function ArticleView({ article, locale, preview = false, related = [], sa
 
         {(article.tags.length > 0 || extraCats.length > 0 || article.topics.length > 0) && (
           <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-gray-200 pt-4">
-            <span className="text-xs font-bold uppercase text-ink-soft">{t.tags}:</span>
+            <span className="text-xs font-bold text-ink-soft">{t.tags}:</span>
             {article.tags.map(({ tag }) => (
               <Link key={tag.id} href={`/${locale}/search?q=${encodeURIComponent(tag.name)}`} className="rounded-full bg-gray-100 px-3 py-1 text-xs hover:bg-brand-light hover:text-brand">
                 #{tag.name}

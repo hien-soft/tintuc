@@ -12,7 +12,7 @@ export function ShareLinks({ path, title, label }: { path: string; title: string
   ];
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-xs font-bold uppercase text-ink-soft">{label}:</span>
+      <span className="text-xs font-bold text-ink-soft">{label}:</span>
       {links.map((l) => (
         <a
           key={l.name}

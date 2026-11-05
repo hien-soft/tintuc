@@ -31,10 +31,10 @@ function ArticleAnchor({ article, locale, className, children }: { article: Card
 
 export function CardMeta({ article, locale, className = "" }: { article: Card; locale: PublicLocale; className?: string }) {
   return (
-    <p className={`text-xs text-ink-soft ${className}`}>
+    <p className={`text-xs text-ink-muted ${className}`}>
       {article.publishedAt && <time dateTime={toIsoVN(article.publishedAt)}>{formatRelative(article.publishedAt, new Date(), locale)}</time>}
-      {article.publishedAt && <span className="mx-1.5 text-gray-300">|</span>}
-      <Link href={sourceSearchUrl(article.source.slug, locale)} className="font-semibold text-brand hover:underline">
+      {article.publishedAt && <span className="mx-1.5 text-gray-300" aria-hidden="true">•</span>}
+      <Link href={sourceSearchUrl(article.source.slug, locale)} className="font-semibold text-brand hover:text-brand-dark">
         {article.source.name}
       </Link>
     </p>
@@ -44,11 +44,11 @@ export function CardMeta({ article, locale, className = "" }: { article: Card; l
 function TypeBadge({ article }: { article: Card }) {
   const label = article.type === "PHOTO_STORY" ? "Ảnh" : article.type === "GRAPHIC" ? "Đồ họa" : article.type === "MEGASTORY" ? "Mega" : null;
   if (!label) return null;
-  return <span className="absolute left-2 top-2 rounded bg-brand px-1.5 py-0.5 text-[10px] font-bold uppercase text-white">{label}</span>;
+  return <span className="absolute left-2.5 top-2.5 inline-flex h-6 items-center rounded-full bg-white/95 px-2.5 text-[11px] font-bold text-brand shadow-xs backdrop-blur">{label}</span>;
 }
 
 function Cover({ article, size, eager, className }: { article: Card; size: "thumb" | "stand" | "large"; eager?: boolean; className: string }) {
-  if (!article.cover) return <div className={`${className} bg-gradient-to-br from-gray-100 to-gray-200`} aria-hidden="true" />;
+  if (!article.cover) return <div className={`${className} bg-grad-soft`} aria-hidden="true" />;
   return (
     <img
       src={mediaUrl(article.cover.key, size)}
@@ -66,11 +66,11 @@ export function ArticleCard({ article, variant = "list", locale, eager, classNam
     case "lead":
       return (
         <article className={`group ${className}`}>
-          <ArticleAnchor article={article} locale={locale} className="relative block overflow-hidden">
-            <Cover article={article} size="stand" eager={eager} className="aspect-video w-full transition duration-300 group-hover:scale-[1.02]" />
+          <ArticleAnchor article={article} locale={locale} className="relative block overflow-hidden rounded-lg">
+            <Cover article={article} size="stand" eager={eager} className="aspect-video w-full transition duration-300 ease-ds ease-ds group-hover:scale-[1.04]" />
             <TypeBadge article={article} />
           </ArticleAnchor>
-          <h3 className="mt-2 text-lg font-bold leading-snug sm:text-xl">
+          <h3 className="mt-3 text-lg font-bold leading-snug text-ink sm:text-[22px] sm:leading-tight">
             <ArticleAnchor article={article} locale={locale} className="hover:text-brand">
               {article.title}
             </ArticleAnchor>
@@ -82,11 +82,11 @@ export function ArticleCard({ article, variant = "list", locale, eager, classNam
     case "tile":
       return (
         <article className={`group ${className}`}>
-          <ArticleAnchor article={article} locale={locale} className="relative block overflow-hidden">
-            <Cover article={article} size="thumb" eager={eager} className="aspect-video w-full transition duration-300 group-hover:scale-[1.03]" />
+          <ArticleAnchor article={article} locale={locale} className="relative block overflow-hidden rounded-md">
+            <Cover article={article} size="thumb" eager={eager} className="aspect-video w-full transition duration-300 ease-ds group-hover:scale-[1.04]" />
             <TypeBadge article={article} />
           </ArticleAnchor>
-          <h3 className="mt-1.5 line-clamp-3 text-sm font-bold leading-snug">
+          <h3 className="mt-2 line-clamp-3 text-sm font-bold leading-snug text-ink">
             <ArticleAnchor article={article} locale={locale} className="hover:text-brand">
               {article.title}
             </ArticleAnchor>
@@ -97,12 +97,12 @@ export function ArticleCard({ article, variant = "list", locale, eager, classNam
     case "row":
       return (
         <article className={`flex gap-3 sm:gap-4 ${className}`}>
-          <ArticleAnchor article={article} locale={locale} className="relative block w-32 shrink-0 overflow-hidden sm:w-56">
+          <ArticleAnchor article={article} locale={locale} className="relative block w-32 shrink-0 overflow-hidden rounded-md sm:w-56">
             <Cover article={article} size="thumb" className="aspect-video w-full" />
             <TypeBadge article={article} />
           </ArticleAnchor>
           <div className="min-w-0 flex-1">
-            <h3 className="text-base font-bold leading-snug sm:text-lg">
+            <h3 className="text-base font-bold leading-snug text-ink sm:text-lg">
               <ArticleAnchor article={article} locale={locale} className="hover:text-brand">
                 {article.title}
               </ArticleAnchor>
@@ -115,11 +115,11 @@ export function ArticleCard({ article, variant = "list", locale, eager, classNam
     case "thumb":
       return (
         <article className={`flex gap-3 ${className}`}>
-          <ArticleAnchor article={article} locale={locale} className="block w-24 shrink-0 overflow-hidden">
+          <ArticleAnchor article={article} locale={locale} className="block w-24 shrink-0 overflow-hidden rounded-md">
             <Cover article={article} size="thumb" className="aspect-[4/3] w-full" />
           </ArticleAnchor>
           <div className="min-w-0 flex-1">
-            <h3 className="line-clamp-3 text-sm font-semibold leading-snug">
+            <h3 className="line-clamp-3 text-sm font-semibold leading-snug text-ink">
               <ArticleAnchor article={article} locale={locale} className="hover:text-brand">
                 {article.title}
               </ArticleAnchor>
@@ -135,13 +135,13 @@ export function ArticleCard({ article, variant = "list", locale, eager, classNam
           <ArticleAnchor article={article} locale={locale} className="font-semibold hover:text-brand">
             {article.title}
           </ArticleAnchor>
-          {article.publishedAt && <span className="text-xs text-ink-soft">({formatRelative(article.publishedAt, new Date(), locale)})</span>}
+          {article.publishedAt && <span className="text-xs text-ink-muted">({formatRelative(article.publishedAt, new Date(), locale)})</span>}
         </span>
       );
     default:
       return (
         <article className={className}>
-          <h3 className="text-[15px] font-semibold leading-snug">
+          <h3 className="text-[15px] font-semibold leading-snug text-ink">
             <ArticleAnchor article={article} locale={locale} className="hover:text-brand">
               {article.title}
             </ArticleAnchor>

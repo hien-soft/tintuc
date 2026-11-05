@@ -21,7 +21,7 @@ function ToolButton({ onClick, active, title, children, disabled }: { onClick: (
       disabled={disabled}
       onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
-      className={`min-w-8 rounded px-2 py-1 text-sm ${active ? "bg-gray-900 text-white" : "text-gray-700 hover:bg-gray-200"} disabled:opacity-40`}
+      className={`min-w-8 rounded-full px-2.5 py-1 text-sm font-medium transition-colors ${active ? "bg-brand text-white" : "text-gray-700 hover:bg-white hover:text-brand"} disabled:opacity-40`}
     >
       {children}
     </button>
@@ -48,7 +48,7 @@ function Toolbar({ editor, onPickImages }: { editor: Editor; onPickImages: () =>
     editor.chain().focus().insertContent(`<blockquote><p><strong>Tin liên quan:</strong> <a href="${url.replace(/"/g, "")}">${title.replace(/</g, "")}</a></p></blockquote>`).run();
   };
   return (
-    <div className="sticky top-14 z-10 flex flex-wrap gap-0.5 border-b border-gray-200 bg-gray-50 p-1">
+    <div className="sticky top-[72px] z-10 flex flex-wrap gap-1 rounded-t-lg border-b border-hairline bg-canvas p-1.5">
       <ToolButton title="Đậm" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}><b>B</b></ToolButton>
       <ToolButton title="Nghiêng" active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()}><i>I</i></ToolButton>
       <ToolButton title="Tiêu đề H2" active={editor.isActive("heading", { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</ToolButton>
@@ -101,7 +101,7 @@ export function RichEditor({ html, readOnly, onChange }: { html: string; readOnl
   if (!editor) return <div className="min-h-[420px] animate-pulse bg-gray-50" />;
 
   return (
-    <div className="rounded-md border border-gray-300 bg-white">
+    <div className="rounded-lg border border-[#CFD8EA] bg-white focus-within:border-[#0061FC] focus-within:shadow-[0_0_0_4px_rgba(0,97,252,0.14)]">
       {!readOnly && <Toolbar editor={editor} onPickImages={() => setPicker(true)} />}
       <EditorContent editor={editor} />
       <MediaPicker

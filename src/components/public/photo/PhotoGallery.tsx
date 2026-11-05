@@ -54,7 +54,7 @@ export function PhotoGallery({ photos, labels }: { photos: GalleryPhoto[]; label
       <div className="space-y-2">
         <button type="button" onClick={() => setIndex(0)} className="group relative block w-full overflow-hidden bg-black" aria-label={lead.alt}>
           <img src={lead.large} alt={lead.alt} fetchPriority="high" className="mx-auto max-h-[70vh] w-full object-contain transition group-hover:opacity-90" />
-          <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-1 text-xs font-semibold text-white">1 / {count}</span>
+          <span className="absolute bottom-3 right-3 rounded-full bg-ink-950/70 px-3 py-1 text-xs font-semibold tabular-nums text-white backdrop-blur">1 / {count}</span>
         </button>
         {rest.length > 0 && (
           <ul className="grid grid-cols-3 gap-2 sm:grid-cols-5">

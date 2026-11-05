@@ -30,7 +30,7 @@ export function SortableList({ kind, items }: { kind: "category" | "topic" | "pa
   return (
     <div>
       <p className="mb-2 text-xs text-gray-500">Kéo thả để sắp xếp. {pending ? "Đang lưu..." : saved}</p>
-      <ul className="divide-y rounded border border-gray-200">
+      <ul className="divide-y divide-hairline overflow-hidden rounded-lg border border-hairline bg-white">
         {list.map((item, i) => (
           <li key={item.id} draggable onDragStart={() => (drag.current = i)} onDragOver={(e) => e.preventDefault()} onDrop={() => drop(i)} className="flex items-center gap-3 bg-white px-3 py-2">
             <span className="cursor-move select-none text-gray-400" aria-hidden>⋮⋮</span>

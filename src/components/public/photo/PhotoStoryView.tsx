@@ -54,7 +54,7 @@ export function PhotoStoryView({ article, locale, preview = false, related = [] 
         </Link>
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold uppercase text-ink-soft">{t.attachedCategories}:</span>
+        <span className="text-xs font-bold text-ink-soft">{t.attachedCategories}:</span>
         {cats.map((c) => (
           <Link key={c.id} href={categoryUrl(c, locale)} className="rounded-full border border-gray-200 px-3 py-1 text-xs hover:border-brand hover:text-brand">
             {c.name}

@@ -27,7 +27,7 @@ export default async function StaticPageView({ params }: Props) {
   return (
     <article className="mx-auto max-w-3xl">
       <Breadcrumb items={[{ label: dict(locale).home, href: `/${locale}` }, { label: page.title }]} />
-      <h1 className="mb-5 border-b-2 border-brand pb-2 text-2xl font-bold text-ink sm:text-3xl">{page.title}</h1>
+      <h1 className="mb-5 text-[28px] font-bold leading-tight tracking-tight text-ink sm:text-[34px]">{page.title}</h1>
       <div className="article-body" dangerouslySetInnerHTML={{ __html: page.contentHtml }} />
     </article>
   );

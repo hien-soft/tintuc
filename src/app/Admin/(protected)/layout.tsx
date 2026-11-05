@@ -35,24 +35,24 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   ];
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-canvas">
       <Sidebar items={items.filter((i) => i.show)} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex h-14 items-center justify-end gap-3 border-b border-gray-200 bg-white/95 px-4 backdrop-blur lg:px-6">
-          <a href="/vi" target="_blank" className="mr-auto hidden text-sm text-gray-500 hover:text-brand sm:block">Xem trang công khai ↗</a>
+        <header className="sticky top-0 z-20 flex h-[72px] items-center justify-end gap-3 bg-canvas/90 px-4 pl-16 backdrop-blur lg:px-8">
+          <a href="/vi" target="_blank" className="ds-btn ds-btn--outline ds-btn--sm mr-auto hidden sm:inline-flex">Xem trang công khai ↗</a>
           <NotificationBell initialUnread={unread} />
-          <Link href="/Admin/profile" className="flex items-center gap-2 rounded px-2 py-1 hover:bg-gray-100">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-brand/10 text-sm font-bold text-brand">{user.fullName.split(" ").pop()?.[0]}</span>
+          <Link href="/Admin/profile" className="flex items-center gap-2.5 rounded-full bg-white py-1 pl-1 pr-3 shadow-xs ring-1 ring-hairline transition-colors hover:ring-brand-200">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-grad-primary text-sm font-bold text-white">{user.fullName.split(" ").pop()?.[0]}</span>
             <span className="hidden text-left leading-tight md:block">
-              <span className="block text-sm font-semibold text-gray-800">{user.fullName}</span>
+              <span className="block text-sm font-semibold text-ink">{user.fullName}</span>
               <span className="block text-xs text-gray-500">{user.roles.map((r) => ROLE_LABELS[r]).join(", ")}</span>
             </span>
           </Link>
           <form action={logoutAction}>
-            <button className="rounded px-2 py-1 text-sm text-gray-600 hover:bg-gray-100" type="submit">Đăng xuất</button>
+            <button className="rounded-full px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-white hover:text-[#DC3D43]" type="submit">Đăng xuất</button>
           </form>
         </header>
-        <main className="flex-1 p-4 lg:p-6">{children}</main>
+        <main className="flex-1 px-4 pb-10 pt-2 lg:px-8">{children}</main>
       </div>
     </div>
   );

@@ -57,7 +57,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
         actions={can(user, "article.create") && <Link href="/Admin/articles/new" className={btnCls.primary}>+ Viết bài mới</Link>}
       />
       <Card className="mb-4">
-        <form className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5" method="get">
+        <form className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5" method="get">
           <input name="q" defaultValue={sp.q} placeholder="Từ khóa trong tiêu đề" className={inputCls} />
           <select name="status" defaultValue={sp.status ?? ""} className={inputCls}>
             <option value="">Mọi trạng thái</option>
@@ -92,26 +92,26 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
       {items.length === 0 ? (
         <EmptyState>Không có bài viết phù hợp.</EmptyState>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
-          <table className="min-w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-gray-50 text-left text-xs font-semibold uppercase text-gray-500">
+        <div className="ds-card--dash overflow-x-auto">
+          <table className="w-full min-w-[960px] divide-y divide-hairline text-sm">
+            <thead className="bg-canvas text-left text-xs font-semibold text-[#2A3560]">
               <tr>
-                <th className="px-3 py-2">Tiêu đề</th>
-                <th className="px-3 py-2">Loại</th>
-                <th className="px-3 py-2">Danh mục</th>
-                <th className="px-3 py-2">Tác giả</th>
-                <th className="px-3 py-2">Trạng thái</th>
-                <th className="px-3 py-2">Người giữ / duyệt</th>
-                <th className="px-3 py-2">Cập nhật</th>
-                <th className="px-3 py-2"></th>
+                <th className="min-w-[280px] px-4 py-3">Tiêu đề</th>
+                <th className="px-4 py-3">Loại</th>
+                <th className="px-4 py-3">Danh mục</th>
+                <th className="px-4 py-3">Tác giả</th>
+                <th className="px-4 py-3">Trạng thái</th>
+                <th className="px-4 py-3">Người giữ / duyệt</th>
+                <th className="px-4 py-3">Cập nhật</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-hairline">
               {items.map((a) => (
                 <tr key={a.id} className="hover:bg-gray-50">
                   <td className="max-w-md px-3 py-2">
                     <Link href={`/Admin/articles/${a.id}`} className="font-medium text-gray-900 hover:text-brand">
-                      {a.isUrgent && <span className="mr-1 rounded bg-red-600 px-1 text-[10px] font-bold text-white">KHẨN</span>}
+                      {a.isUrgent && <span className="mr-1 inline-flex h-5 items-center rounded-full bg-accent-50 px-2 text-[10px] font-bold text-accent-strong">KHẨN</span>}
                       {a.isPinned && <span className="mr-1" title="Đã ghim">📌</span>}
                       {a.title || <em className="text-gray-400">(chưa có tiêu đề)</em>}
                     </Link>
@@ -119,7 +119,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                   <td className="whitespace-nowrap px-3 py-2 text-gray-600">{TYPE_LABELS[a.type]}</td>
                   <td className="whitespace-nowrap px-3 py-2 text-gray-600">{a.primaryCat.name}</td>
                   <td className="whitespace-nowrap px-3 py-2 text-gray-600">{a.author.fullName}</td>
-                  <td className="px-3 py-2"><StatusBadge status={a.status} /></td>
+                  <td className="px-4 py-3"><StatusBadge status={a.status} /></td>
                   <td className="whitespace-nowrap px-3 py-2 text-xs text-gray-600">
                     {a.holderId ? <span className="font-semibold text-orange-700">{holders.get(a.holderId)}</span> : [a.l1Reviewer?.fullName, a.l2Reviewer?.fullName].filter(Boolean).join(" → ") || "—"}
                   </td>

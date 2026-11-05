@@ -42,10 +42,10 @@ export default async function HistoryPage({ params, searchParams }: { params: Pr
           <Card title="So sánh hai phiên bản">
             <form className="mb-4 flex flex-wrap items-end gap-2" method="get">
               <label className="text-sm">Phiên bản A
-                <select name="a" defaultValue={va} className="ml-2 rounded border px-2 py-1">{revisions.map((r) => <option key={r.id} value={r.version}>v{r.version}</option>)}</select>
+                <select name="a" defaultValue={va} className="ml-2 h-9 rounded-full border px-3 text-sm">{revisions.map((r) => <option key={r.id} value={r.version}>v{r.version}</option>)}</select>
               </label>
               <label className="text-sm">Phiên bản B
-                <select name="b" defaultValue={vb} className="ml-2 rounded border px-2 py-1">{revisions.map((r) => <option key={r.id} value={r.version}>v{r.version}</option>)}</select>
+                <select name="b" defaultValue={vb} className="ml-2 h-9 rounded-full border px-3 text-sm">{revisions.map((r) => <option key={r.id} value={r.version}>v{r.version}</option>)}</select>
               </label>
               <button className={btnCls.default}>So sánh</button>
             </form>
@@ -53,7 +53,7 @@ export default async function HistoryPage({ params, searchParams }: { params: Pr
           </Card>
           <Card title={`Các phiên bản (${revisions.length})`}>
             <table className="min-w-full text-sm">
-              <thead className="text-left text-xs uppercase text-gray-500">
+              <thead className="text-left text-xs font-semibold text-[#2A3560]">
                 <tr><th className="py-1">Phiên bản</th><th>Người sửa</th><th>Thời điểm</th><th>Trạng thái lúc đó</th><th>Ghi chú</th><th></th></tr>
               </thead>
               <tbody className="divide-y">

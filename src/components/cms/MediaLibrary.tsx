@@ -12,7 +12,7 @@ function MediaCard({ m }: { m: MediaDto & { uploader: string } }) {
   const [msg, setMsg] = useState<string>();
   const [pending, start] = useTransition();
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+    <div className="ds-card--dash overflow-hidden">
       <img src={`/media/${m.key}/thumb.webp`} alt={m.alt ?? ""} className="aspect-video w-full object-cover" loading="lazy" />
       <div className="space-y-1 p-2 text-xs">
         <textarea className={`${inputCls} text-xs`} rows={2} value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Chú thích" aria-label="Chú thích" />

@@ -39,7 +39,7 @@ export function Listing({ locale, title, crumbs, items, page, pages, basePath, f
     <div className={showSidebar ? "grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]" : ""}>
       <div className="min-w-0">
         <Breadcrumb items={crumbs} />
-        <h1 className="mb-4 border-b-2 border-brand pb-2 text-2xl font-bold text-brand sm:text-3xl">{title}</h1>
+        <h1 className="mb-4 text-[28px] font-bold leading-tight tracking-tight text-ink sm:text-[34px]">{title}</h1>
         {intro}
         {items.length === 0 && <EmptyState text={t.noArticles} />}
 

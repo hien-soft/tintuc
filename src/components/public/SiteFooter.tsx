@@ -13,13 +13,13 @@ export async function SiteFooter({ locale }: { locale: PublicLocale }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-10">
+    <footer className="mt-16">
       {partners.length > 0 && (
         <section aria-label={t.partners} className="border-t border-gray-200 bg-gray-50">
-          <ul className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-center gap-3 px-4 py-4">
+          <ul className="mx-auto flex max-w-container flex-wrap items-center justify-center gap-3 px-4 py-6 sm:px-6">
             {partners.map((p) => (
               <li key={p.id}>
-                <a href={p.url} target="_blank" rel="noopener noreferrer sponsored" title={p.name} className="block rounded border border-gray-200 bg-white p-1 opacity-80 transition hover:opacity-100">
+                <a href={p.url} target="_blank" rel="noopener noreferrer sponsored" title={p.name} className="block rounded-md border border-gray-200 bg-white p-2 opacity-80 transition hover:border-brand-200 hover:opacity-100 hover:shadow-hover">
                   <img src={p.logoUrl} alt={p.name} loading="lazy" className="h-10 w-auto max-w-[140px] object-contain" />
                 </a>
               </li>
@@ -28,14 +28,15 @@ export async function SiteFooter({ locale }: { locale: PublicLocale }) {
         </section>
       )}
 
-      <div className="border-t-4 border-brand bg-[#1b1d21] text-gray-300">
+      <div className="relative bg-[#0f172a] text-gray-300">
+        <div aria-hidden="true" className="h-1 bg-grad-duo" />
         {columns.length > 0 && (
-          <nav aria-label={t.menu} className="mx-auto grid max-w-[1200px] grid-cols-2 gap-x-6 gap-y-4 px-4 py-8 sm:grid-cols-4">
+          <nav aria-label={t.menu} className="mx-auto grid max-w-container grid-cols-2 gap-x-6 gap-y-6 px-4 py-12 sm:grid-cols-4 sm:px-6">
             {columns.map((col, i) => (
-              <ul key={i} className="space-y-2 text-sm">
+              <ul key={i} className="space-y-3 text-sm">
                 {col.map((c) => (
                   <li key={c.id}>
-                    <Link href={categoryUrl(c, locale)} className="hover:text-white">
+                    <Link href={categoryUrl(c, locale)} className="transition-colors hover:text-white">
                       {c.name}
                     </Link>
                   </li>
@@ -45,9 +46,9 @@ export async function SiteFooter({ locale }: { locale: PublicLocale }) {
           </nav>
         )}
         <div className="border-t border-white/10">
-          <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 py-6 md:flex-row md:items-start md:justify-between">
+          <div className="mx-auto flex max-w-container flex-col gap-6 px-4 py-8 sm:px-6 md:flex-row md:items-start md:justify-between">
             <div className="space-y-2 text-xs leading-relaxed text-gray-400">
-              <div className="rounded bg-white px-3 py-2 sm:inline-block">
+              <div className="rounded-lg bg-white px-4 py-3 sm:inline-block">
                 <Logo />
               </div>
               <p>
@@ -58,19 +59,19 @@ export async function SiteFooter({ locale }: { locale: PublicLocale }) {
             </div>
             <ul className="flex shrink-0 flex-wrap items-center gap-x-2 text-sm">
               <li>
-                <Link href={`/${locale}`} className="hover:text-white">
+                <Link href={`/${locale}`} className="transition-colors hover:text-white">
                   {t.home}
                 </Link>
               </li>
               <li aria-hidden="true">|</li>
               <li>
-                <Link href={`/${locale}/trang/dieu-khoan-su-dung`} className="hover:text-white">
+                <Link href={`/${locale}/trang/dieu-khoan-su-dung`} className="transition-colors hover:text-white">
                   {t.terms}
                 </Link>
               </li>
               <li aria-hidden="true">|</li>
               <li>
-                <Link href={`/${locale}/trang/lien-he`} className="hover:text-white">
+                <Link href={`/${locale}/trang/lien-he`} className="transition-colors hover:text-white">
                   {t.contact}
                 </Link>
               </li>

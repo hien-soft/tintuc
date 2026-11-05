@@ -7,7 +7,7 @@ export function DiffView({ diffs }: { diffs: FieldDiff[] }) {
     <div className="space-y-4">
       {changed.map((d) => (
         <div key={d.field}>
-          <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">{d.field}</h4>
+          <h4 className="mb-1 text-xs font-semibold tracking-wide text-gray-500">{d.field}</h4>
           <p className="whitespace-pre-wrap rounded border border-gray-200 bg-gray-50 p-3 text-sm leading-relaxed">
             {d.parts.map((p, i) =>
               p.added ? (

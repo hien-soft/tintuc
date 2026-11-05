@@ -19,9 +19,9 @@ export function Tabs({ panels, title, className = "" }: { panels: TabPanel[]; ti
   };
   return (
     <div className={className}>
-      <div className="mb-3 flex flex-wrap items-end gap-x-4 border-b-2 border-brand">
+      <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-3">
         {title}
-        <div role="tablist" className="-mb-0.5 flex max-w-full overflow-x-auto [scrollbar-width:none]" onKeyDown={onKey}>
+        <div role="tablist" className="flex max-w-full gap-2 overflow-x-auto [scrollbar-width:none]" onKeyDown={onKey}>
           {panels.map((p, i) => (
             <button
               key={p.key}
@@ -32,7 +32,7 @@ export function Tabs({ panels, title, className = "" }: { panels: TabPanel[]; ti
               aria-controls={`${id}-panel-${i}`}
               tabIndex={i === active ? 0 : -1}
               onClick={() => setActive(i)}
-              className={`whitespace-nowrap border-b-2 px-3 py-1.5 text-sm font-bold uppercase transition ${i === active ? "border-brand bg-brand text-white" : "border-transparent text-ink-soft hover:text-brand"}`}
+              className="ds-chip"
             >
               {p.label}
             </button>

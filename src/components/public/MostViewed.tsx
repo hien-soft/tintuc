@@ -9,8 +9,8 @@ export function MostViewedList({ items, locale }: { items: Card[]; locale: Publi
   return (
     <ol className="divide-y divide-gray-100">
       {items.map((a, i) => (
-        <li key={a.id} className="flex gap-3 py-2.5">
-          <span className={`w-7 shrink-0 text-2xl font-bold leading-none ${i < 3 ? "text-brand" : "text-gray-300"}`}>{i + 1}</span>
+        <li key={a.id} className="flex items-start gap-3 py-3">
+          <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-bold tabular-nums ${i < 3 ? "bg-grad-primary text-white shadow-brand" : "bg-gray-100 text-gray-500"}`}>{i + 1}</span>
           <ArticleCard article={a} locale={locale} variant="list" />
         </li>
       ))}

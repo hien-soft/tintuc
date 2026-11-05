@@ -133,7 +133,7 @@ export function Promos({ ads, locale, labels }: { ads: PublicAd[]; locale: strin
       {popup && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4" onClick={() => setPopup(null)}>
           <div role="dialog" aria-modal="true" aria-label={popup.name} className="relative max-w-[min(600px,92vw)]" onClick={(e) => e.stopPropagation()}>
-            <span className="absolute left-0 top-0 rounded-br bg-black/50 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-white">{labels.advertisement}</span>
+            <span className="absolute left-1.5 top-1.5 rounded-full bg-ink-950/60 px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur">{labels.advertisement}</span>
             <button
               ref={closeRef}
               type="button"
@@ -143,7 +143,7 @@ export function Promos({ ads, locale, labels }: { ads: PublicAd[]; locale: strin
             >
               ×
             </button>
-            <PromoImage ad={popup} src={popup.image} width={600} className="h-auto max-h-[80vh] w-auto max-w-full rounded shadow-2xl" />
+            <PromoImage ad={popup} src={popup.image} width={600} className="h-auto max-h-[80vh] w-auto max-w-full rounded-2xl shadow-lg" />
           </div>
         </div>
       )}

@@ -44,12 +44,12 @@ export default async function AuditLogPage({ searchParams }: { searchParams: Pro
           <div className="flex gap-2"><button className={btnCls.primary}>Lọc</button><Link href="/Admin/audit-log" className={btnCls.default}>Xóa</Link></div>
         </form>
       </Card>
-      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+      <div className="ds-card--dash overflow-x-auto">
         <table className="min-w-full divide-y text-sm">
-          <thead className="bg-gray-50 text-left text-xs uppercase text-gray-500">
-            <tr><th className="px-3 py-2">Thời gian</th><th className="px-3 py-2">Người thực hiện</th><th className="px-3 py-2">Hành động</th><th className="px-3 py-2">Đối tượng</th><th className="px-3 py-2">Chi tiết</th><th className="px-3 py-2">IP</th></tr>
+          <thead className="bg-canvas text-left text-xs font-semibold text-[#2A3560]">
+            <tr><th className="px-4 py-3">Thời gian</th><th className="px-4 py-3">Người thực hiện</th><th className="px-4 py-3">Hành động</th><th className="px-4 py-3">Đối tượng</th><th className="px-4 py-3">Chi tiết</th><th className="px-4 py-3">IP</th></tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-hairline">
             {rows.map((r) => (
               <tr key={r.id}>
                 <td className="whitespace-nowrap px-3 py-2 text-xs text-gray-500">{formatDateTime(r.createdAt)}</td>

@@ -7,7 +7,7 @@ export function StatusMessage({ code, title, text, homeHref, homeLabel }: { code
       <p className="text-6xl font-bold text-brand">{code}</p>
       <h1 className="mt-4 text-2xl font-bold">{title}</h1>
       <p className="mt-2 text-ink-soft">{text}</p>
-      <Link href={homeHref} className="mt-6 inline-block rounded bg-brand px-5 py-2 text-sm font-bold text-white hover:bg-brand-dark">
+      <Link href={homeHref} className="mt-6 ds-btn">
         {homeLabel}
       </Link>
     </div>

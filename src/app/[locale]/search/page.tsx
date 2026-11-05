@@ -54,21 +54,21 @@ export default async function SearchPage({ params, searchParams }: Props) {
   if (to) query.set("to", to);
   const base = `/${locale}/search${query.size ? `?${query.toString()}` : ""}`;
   const sourceName = sources.find((s) => s.slug === source)?.name;
-  const input = "w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-brand focus:outline-none";
+  const input = "h-11 w-full rounded-md border border-[#CFD8EA] bg-white px-3.5 text-sm";
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="min-w-0">
         <Breadcrumb items={[{ label: t.home, href: `/${locale}` }, { label: t.search }]} />
-        <h1 className="mb-4 border-b-2 border-brand pb-2 text-2xl font-bold text-brand sm:text-3xl">{t.search}</h1>
-        <form action={`/${locale}/search`} method="get" className="mb-6 grid gap-3 rounded border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2 lg:grid-cols-4">
+        <h1 className="mb-4 text-[28px] font-bold leading-tight tracking-tight text-ink sm:text-[34px]">{t.search}</h1>
+        <form action={`/${locale}/search`} method="get" className="mb-8 grid gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 sm:grid-cols-2 sm:p-6 lg:grid-cols-4">
           <label className="sm:col-span-2 lg:col-span-4">
             <span className="sr-only">{t.search}</span>
-            <input name="q" type="search" defaultValue={q} placeholder={t.searchPlaceholder} className={input} />
+            <input name="q" type="search" defaultValue={q} placeholder={t.searchPlaceholder} className={`${input} h-[52px] rounded-full px-5 text-base`} />
           </label>
-          <label className="text-xs text-ink-soft">
+          <label className="text-[13px] font-semibold text-[#2A3560]">
             {t.category}
-            <select name="category" defaultValue={category ? String(category.publicId) : ""} className={`${input} mt-1 bg-white`}>
+            <select name="category" defaultValue={category ? String(category.publicId) : ""} className={`${input} mt-1.5`}>
               <option value="">{t.allCategories}</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.publicId}>
@@ -77,9 +77,9 @@ export default async function SearchPage({ params, searchParams }: Props) {
               ))}
             </select>
           </label>
-          <label className="text-xs text-ink-soft">
+          <label className="text-[13px] font-semibold text-[#2A3560]">
             {t.source}
-            <select name="source" defaultValue={source} className={`${input} mt-1 bg-white`}>
+            <select name="source" defaultValue={source} className={`${input} mt-1.5`}>
               <option value="">{t.allSources}</option>
               {sources.map((s) => (
                 <option key={s.slug} value={s.slug}>
@@ -88,16 +88,16 @@ export default async function SearchPage({ params, searchParams }: Props) {
               ))}
             </select>
           </label>
-          <label className="text-xs text-ink-soft">
+          <label className="text-[13px] font-semibold text-[#2A3560]">
             {t.from}
-            <input name="from" type="date" defaultValue={from} className={`${input} mt-1 bg-white`} />
+            <input name="from" type="date" defaultValue={from} className={`${input} mt-1.5`} />
           </label>
-          <label className="text-xs text-ink-soft">
+          <label className="text-[13px] font-semibold text-[#2A3560]">
             {t.to}
-            <input name="to" type="date" defaultValue={to} className={`${input} mt-1 bg-white`} />
+            <input name="to" type="date" defaultValue={to} className={`${input} mt-1.5`} />
           </label>
           <div className="sm:col-span-2 lg:col-span-4">
-            <button type="submit" className="rounded bg-brand px-6 py-2 text-sm font-bold text-white hover:bg-brand-dark">
+            <button type="submit" className="ds-btn">
               {t.submit}
             </button>
           </div>

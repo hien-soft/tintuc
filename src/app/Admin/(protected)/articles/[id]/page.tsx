@@ -46,7 +46,7 @@ export default async function ArticleEditPage({ params }: { params: Promise<{ id
         {article.status === "PUBLISHED" && can(user, "article.pin") && (
           <form action={togglePinAction}>
             <input type="hidden" name="id" value={article.id} />
-            <button className="rounded border px-2 py-1 text-xs hover:bg-gray-100">{article.isPinned ? "📌 Bỏ ghim" : "📌 Ghim đầu danh mục"}</button>
+            <button className="ds-btn ds-btn--outline ds-btn--sm">{article.isPinned ? "📌 Bỏ ghim" : "📌 Ghim đầu danh mục"}</button>
           </form>
         )}
       </div>

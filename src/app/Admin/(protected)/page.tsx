@@ -58,14 +58,30 @@ export default async function DashboardPage() {
     { label: "Hẹn giờ đăng", value: scheduled, href: "/Admin/articles?status=SCHEDULED" },
   ].filter((s) => s.value !== null);
 
+  // Thẻ KPI màu đặc kiểu Jobie: mỗi thẻ một gradient của bảng màu logo
+  const KPI_TONES = [
+    "linear-gradient(135deg, #0B3FD6 0%, #0061FC 55%, #1E8BFF 100%)",
+    "linear-gradient(135deg, #EE5D12 0%, #F8781A 55%, #FBA82A 100%)",
+    "linear-gradient(135deg, #0574D6 0%, #0A9BFC 100%)",
+    "linear-gradient(135deg, #061454 0%, #0A1F7A 55%, #0B2C9F 100%)",
+    "linear-gradient(135deg, #0B8A5F 0%, #12966A 55%, #2BB585 100%)",
+    "linear-gradient(135deg, #3B49D1 0%, #5B6AE8 100%)",
+  ];
+
   return (
     <>
       <PageHeader title={`Xin chào, ${user.fullName}`} description={`Hôm nay ${formatDate(new Date())}`} />
-      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-        {stats.map((s) => (
-          <Link key={s.label} href={s.href} className={`rounded-lg border bg-white p-4 shadow-sm hover:border-brand ${s.alert ? "border-rose-300" : "border-gray-200"}`}>
-            <div className={`text-3xl font-bold ${s.alert ? "text-rose-600" : "text-gray-900"}`}>{s.value}</div>
-            <div className="mt-1 text-xs font-medium uppercase tracking-wide text-gray-500">{s.label}</div>
+      <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+        {stats.map((s, i) => (
+          <Link
+            key={s.label}
+            href={s.href}
+            className={`relative overflow-hidden rounded-xl p-5 text-white shadow-md transition duration-200 ease-ds hover:-translate-y-0.5 ${s.alert ? "ring-4 ring-[#DC3D43]/40" : ""}`}
+            style={{ background: s.alert ? "linear-gradient(135deg, #C2282E 0%, #DC3D43 100%)" : KPI_TONES[i % KPI_TONES.length] }}
+          >
+            <span aria-hidden="true" className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white/10" />
+            <div className="relative text-[32px] font-extrabold leading-none tabular-nums">{s.value}</div>
+            <div className="relative mt-2 text-[13px] font-medium text-white/85">{s.label}</div>
           </Link>
         ))}
       </div>
@@ -74,11 +90,11 @@ export default async function DashboardPage() {
           {todo.length === 0 ? (
             <EmptyState>Không có việc tồn đọng. 🎉</EmptyState>
           ) : (
-            <ul className="divide-y">
+            <ul className="divide-y divide-hairline">
               {todo.map((a) => (
-                <li key={a.id} className="flex flex-wrap items-center gap-2 py-2">
+                <li key={a.id} className="flex flex-wrap items-center gap-2.5 py-3">
                   <StatusBadge status={a.status} />
-                  {a.isUrgent && <span className="rounded bg-red-600 px-1 text-[10px] font-bold text-white">KHẨN</span>}
+                  {a.isUrgent && <span className="inline-flex h-6 items-center rounded-full bg-accent-50 px-2.5 text-[11px] font-bold text-accent-strong">KHẨN</span>}
                   <Link href={`/Admin/articles/${a.id}`} className="flex-1 text-sm font-medium hover:text-brand">{a.title || "(chưa có tiêu đề)"}</Link>
                   <span className="text-xs text-gray-500">{a.primaryCat.name} · {formatDateTime(a.updatedAt)}</span>
                 </li>
@@ -91,19 +107,19 @@ export default async function DashboardPage() {
             {counts.map((c, i) => (
               <div key={i} className="flex flex-1 flex-col items-center gap-1">
                 <span className="text-xs font-semibold text-gray-700">{c}</span>
-                <div className="w-full rounded-t bg-brand/80" style={{ height: `${(c / max) * 110 + 2}px` }} />
+                <div className="w-full rounded-t-[10px] bg-grad-primary" style={{ height: `${(c / max) * 110 + 2}px` }} />
                 <span className="text-[10px] text-gray-500">{formatDate(days[i]).slice(0, 5)}</span>
               </div>
             ))}
           </div>
         </Card>
         <Card title="Bài xem nhiều" className="xl:col-span-3">
-          <ol className="grid gap-x-6 gap-y-1 text-sm md:grid-cols-2">
+          <ol className="grid gap-x-8 gap-y-2.5 text-sm md:grid-cols-2">
             {topViewed.map((a, i) => (
-              <li key={a.id} className="flex gap-2">
-                <span className="w-5 font-bold text-brand">{i + 1}</span>
+              <li key={a.id} className="flex items-center gap-2.5">
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-50 text-xs font-bold text-brand tabular-nums">{i + 1}</span>
                 <Link href={`/Admin/articles/${a.id}`} className="flex-1 truncate hover:text-brand">{a.title}</Link>
-                <span className="text-gray-500">{a.viewCount.toLocaleString("vi-VN")}</span>
+                <span className="text-gray-500 tabular-nums">{a.viewCount.toLocaleString("vi-VN")}</span>
               </li>
             ))}
           </ol>

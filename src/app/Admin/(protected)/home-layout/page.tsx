@@ -32,7 +32,7 @@ export default async function HomeLayoutPage() {
             <input id="ids" name="articleIds" defaultValue={slot?.articleIds.join(", ")} className={inputCls} />
             <SubmitButton>Lưu khối tiêu điểm ảnh</SubmitButton>
           </form>
-          <h3 className="mb-1 mt-4 text-xs font-semibold uppercase text-gray-500">Bộ ảnh đã xuất bản</h3>
+          <h3 className="mb-1 mt-4 text-xs font-semibold text-gray-500">Bộ ảnh đã xuất bản</h3>
           <ul className="max-h-72 overflow-y-auto text-sm">
             {photoStories.map((p) => (
               <li key={p.id} className="flex gap-2 border-b py-1">

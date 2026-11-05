@@ -36,33 +36,38 @@ export function Sidebar({ items }: { items: NavItem[] }) {
 
   return (
     <>
-      <button className="fixed left-3 top-3 z-40 rounded-md bg-gray-900 p-2 text-white lg:hidden" onClick={() => setOpen(!open)} aria-label="Mở menu">
+      <button className="fixed left-3 top-3 z-40 grid h-10 w-10 place-items-center rounded-full bg-navy text-white shadow-md lg:hidden" onClick={() => setOpen(!open)} aria-label="Mở menu">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" /></svg>
       </button>
-      <aside className={`fixed inset-y-0 left-0 z-30 w-64 transform bg-gray-900 text-gray-200 transition-transform lg:static lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}>
-        <div className="flex h-14 items-center gap-2 border-b border-white/10 px-4 pl-14 lg:pl-4">
-          <span className="grid h-8 w-8 place-items-center rounded bg-brand text-sm font-black text-white">TV</span>
-          <div className="leading-tight">
-            <div className="text-sm font-bold text-white">{SITE_NAME}</div>
-            <div className="text-[10px] uppercase tracking-widest text-gray-400">CMS tòa soạn</div>
+      {/* Jobie: sidebar gradient navy, mục đang chọn là "tab" màu nền canvas khuyết vào nội dung */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-30 flex w-72 shrink-0 transform lg:w-64 xl:w-72 flex-col overflow-y-auto text-white/80 transition-transform duration-300 ease-ds lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        style={{ background: "linear-gradient(180deg, #0B2C9F 0%, #0A1F7A 46%, #071457 100%)" }}
+      >
+        <div className="flex items-center gap-3 px-6 pb-5 pt-6 pl-16 lg:pl-6">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-[14px] bg-grad-accent text-base font-extrabold text-white shadow-accent">TV</span>
+          <div className="min-w-0 leading-tight">
+            <div className="truncate text-[17px] font-bold text-white">{SITE_NAME}</div>
+            <span className="mt-1 inline-block rounded-full border border-[#FBC531]/35 bg-[#FBC531]/10 px-2 py-0.5 text-[10px] font-bold text-[#FFD978]">CMS tòa soạn</span>
           </div>
         </div>
-        <nav className="space-y-0.5 p-2">
+        <nav className="flex flex-1 flex-col gap-1 py-2 pl-5">
           {items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm ${isActive(item.href) ? "bg-brand text-white" : "hover:bg-white/10"}`}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={`flex h-12 items-center gap-3.5 rounded-l-full pl-4 pr-5 text-sm font-semibold transition-colors ${isActive(item.href) ? "bg-canvas text-[#0061FC]" : "hover:bg-white/10 hover:text-white"}`}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d={ICONS[item.icon]} /></svg>
-              <span className="flex-1">{item.label}</span>
-              {!!item.badge && <span className="rounded-full bg-amber-400 px-2 text-xs font-bold text-gray-900">{item.badge}</span>}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="shrink-0"><path d={ICONS[item.icon]} /></svg>
+              <span className="flex-1 truncate">{item.label}</span>
+              {!!item.badge && <span className="grid h-6 min-w-6 place-items-center rounded-full bg-[#F8781A] px-1.5 text-xs font-bold text-white">{item.badge}</span>}
             </Link>
           ))}
         </nav>
       </aside>
-      {open && <div className="fixed inset-0 z-20 bg-black/40 lg:hidden" onClick={() => setOpen(false)} />}
+      {open && <div className="fixed inset-0 z-20 bg-navy-950/50 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
     </>
   );
 }

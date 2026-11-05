@@ -25,7 +25,7 @@ export default async function MegaStoryListPage({ params, searchParams }: Props)
   return (
     <div>
       <Breadcrumb items={[{ label: t.home, href: `/${locale}` }, { label: t.megastory }]} />
-      <h1 className="mb-5 border-b-2 border-brand pb-2 text-2xl font-bold text-brand sm:text-3xl">{t.megastory}</h1>
+      <h1 className="mb-5 text-[28px] font-bold leading-tight tracking-tight text-ink sm:text-[34px]">{t.megastory}</h1>
       {items.length === 0 ? (
         <EmptyState text={t.noArticles} />
       ) : (

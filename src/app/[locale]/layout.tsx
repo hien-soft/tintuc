@@ -25,7 +25,7 @@ export default async function PublicLayout({ children, params }: { children: Rea
         {locale === "en" ? "Skip to content" : "Bỏ qua tới nội dung"}
       </a>
       <SiteHeader locale={locale} />
-      <main id="main" className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-5">
+      <main id="main" className="mx-auto w-full max-w-container flex-1 px-4 py-6 sm:px-6">
         {children}
       </main>
       <SiteFooter locale={locale} />

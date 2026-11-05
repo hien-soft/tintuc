@@ -21,7 +21,7 @@ export async function SiteHeader({ locale }: { locale: PublicLocale }) {
     <header>
       {/* Thanh trên cùng */}
       <div className="border-b border-gray-200 bg-gray-50 text-xs text-ink-soft">
-        <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-1.5">
+        <div className="mx-auto flex max-w-container sm:px-6 flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-1.5">
           <Link href={`/${locale}`} className="hidden sm:inline-flex" aria-label={SITE_NAME}>
             <Logo size="sm" />
           </Link>
@@ -31,15 +31,15 @@ export async function SiteHeader({ locale }: { locale: PublicLocale }) {
       </div>
 
       {/* Header: logo lớn + menu 13 chủ đề */}
-      <div className="mx-auto flex max-w-[1200px] items-center gap-6 px-4 py-4">
+      <div className="mx-auto flex max-w-container items-center gap-6 px-4 py-5 sm:px-6">
         <Link href={`/${locale}`} aria-label={SITE_NAME} className="shrink-0">
           <Logo />
         </Link>
         <nav aria-label={t.menu} className="hidden flex-1 lg:block">
-          <ul className="flex flex-wrap justify-end gap-x-4 gap-y-1 text-[13px] font-semibold text-ink">
+          <ul className="flex flex-wrap justify-end gap-x-1 gap-y-1 text-[13px] font-semibold text-ink-soft">
             {menu.map((c) => (
               <li key={c.id}>
-                <Link href={categoryUrl(c, locale)} className="hover:text-brand">
+                <Link href={categoryUrl(c, locale)} className="block rounded-full px-2.5 py-1 transition-colors hover:bg-brand-50 hover:text-brand">
                   {c.name}
                 </Link>
               </li>
@@ -49,8 +49,8 @@ export async function SiteHeader({ locale }: { locale: PublicLocale }) {
       </div>
 
       {/* Thanh điều hướng chính */}
-      <div className="bg-brand text-white">
-        <div className="mx-auto flex max-w-[1200px] items-center px-2 lg:px-4">
+      <div className="sticky top-0 z-30 bg-grad-primary text-white shadow-brand">
+        <div className="mx-auto flex max-w-container items-center gap-1 px-2 py-1.5 lg:px-6">
           <MobileMenu
             openLabel={t.openMenu}
             closeLabel={t.closeMenu}
@@ -71,24 +71,24 @@ export async function SiteHeader({ locale }: { locale: PublicLocale }) {
             ]}
           />
           <nav aria-label={t.home} className="min-w-0 flex-1">
-            <ul className="hidden items-center text-sm font-bold lg:flex">
-              {nav.map((item, i) => (
+            <ul className="hidden items-center gap-0.5 text-sm font-semibold lg:flex">
+              {nav.map((item) => (
                 <li key={item.href + item.label}>
-                  <Link href={item.href} className={`block px-3 py-2.5 hover:bg-brand-dark ${i === 0 ? "pl-0 hover:bg-transparent hover:underline" : ""}`}>
+                  <Link href={item.href} className="block whitespace-nowrap rounded-full px-2.5 py-2 transition-colors hover:bg-white/15 xl:px-3.5">
                     {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <Link href={`/${locale}`} className="block py-2.5 text-sm font-bold lg:hidden">
+            <Link href={`/${locale}`} className="block py-2 text-sm font-bold lg:hidden">
               {SITE_NAME}
             </Link>
           </nav>
-          <div className="flex items-center text-sm font-bold">
-            <Link href={`/${locale}/rss`} className="hidden border-l border-white/30 px-3 py-2.5 hover:bg-brand-dark sm:block">
+          <div className="flex items-center gap-1 text-sm font-semibold">
+            <Link href={`/${locale}/rss`} className="hidden whitespace-nowrap rounded-full px-3 py-2 transition-colors hover:bg-white/15 sm:block">
               {t.rss}
             </Link>
-            <Link href={searchAction} className="flex items-center gap-1.5 border-l border-white/30 px-3 py-2.5 hover:bg-brand-dark" aria-label={t.search}>
+            <Link href={searchAction} className="flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-2 text-brand shadow-xs transition-colors hover:bg-brand-50" aria-label={t.search}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
                 <circle cx="11" cy="11" r="7" />
                 <path d="M20 20l-3.5-3.5" />
@@ -101,15 +101,15 @@ export async function SiteHeader({ locale }: { locale: PublicLocale }) {
 
       {/* Liên kết nhanh */}
       <div className="border-b border-gray-200 bg-white">
-        <ul className="mx-auto flex max-w-[1200px] gap-x-4 overflow-x-auto whitespace-nowrap px-4 py-2 text-xs text-ink-soft [scrollbar-width:none]">
+        <ul className="mx-auto flex max-w-container gap-x-2 overflow-x-auto whitespace-nowrap px-4 py-2.5 text-xs font-medium text-ink-soft [scrollbar-width:none] sm:px-6">
           {quick.map((q) => (
             <li key={q.href + q.label}>
               {q.external ? (
-                <a href={q.href} target="_blank" rel="noopener noreferrer" className="hover:text-brand">
+                <a href={q.href} target="_blank" rel="noopener noreferrer" className="block rounded-full bg-gray-100 px-3 py-1 transition-colors hover:bg-brand-50 hover:text-brand">
                   {q.label}
                 </a>
               ) : (
-                <Link href={q.href} className="hover:text-brand">
+                <Link href={q.href} className="block rounded-full bg-gray-100 px-3 py-1 transition-colors hover:bg-brand-50 hover:text-brand">
                   {q.label}
                 </Link>
               )}

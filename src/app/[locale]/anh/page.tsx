@@ -26,7 +26,7 @@ export default async function PhotoHubPage({ params }: Props) {
     <div className="space-y-8">
       <div>
         <Breadcrumb items={[{ label: t.home, href: `/${locale}` }, { label: t.photo }]} />
-        <h1 className="border-b-2 border-brand pb-2 text-2xl font-bold text-brand sm:text-3xl">{t.photo}</h1>
+        <h1 className="text-[28px] font-bold leading-tight tracking-tight text-ink sm:text-[34px]">{t.photo}</h1>
         <nav className="mt-3 flex flex-wrap gap-2 text-sm">
           {cats.map((c) => (
             <a key={c.id} href={categoryUrl(c, locale)} className="rounded-full border border-gray-300 px-3 py-1 hover:border-brand hover:text-brand">

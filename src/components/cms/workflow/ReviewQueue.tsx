@@ -17,20 +17,20 @@ export function ReviewQueue({ rows, user, level, error }: { rows: Row[]; user: C
       {rows.length === 0 ? (
         <EmptyState>Không có bài nào trong hàng đợi.</EmptyState>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+        <div className="ds-card--dash overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-gray-50 text-left text-xs font-semibold uppercase text-gray-500">
+            <thead className="bg-canvas text-left text-xs font-semibold text-[#2A3560]">
               <tr>
-                <th className="px-3 py-2">Tiêu đề</th>
-                <th className="px-3 py-2">Danh mục</th>
-                <th className="px-3 py-2">Tác giả</th>
-                <th className="px-3 py-2">Thời gian chờ</th>
-                <th className="px-3 py-2">Trạng thái</th>
-                <th className="px-3 py-2">Người đang giữ</th>
-                <th className="px-3 py-2"></th>
+                <th className="px-4 py-3">Tiêu đề</th>
+                <th className="px-4 py-3">Danh mục</th>
+                <th className="px-4 py-3">Tác giả</th>
+                <th className="px-4 py-3">Thời gian chờ</th>
+                <th className="px-4 py-3">Trạng thái</th>
+                <th className="px-4 py-3">Người đang giữ</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-hairline">
               {rows.map((a) => {
                 const { waitingMin, overdue } = overdueInfo(a);
                 const canClaim = checkTransition({ article: a, action: claim, actor: user }).ok;
@@ -38,7 +38,7 @@ export function ReviewQueue({ rows, user, level, error }: { rows: Row[]; user: C
                 return (
                   <tr key={a.id} className={overdue ? "bg-red-50" : a.isUrgent ? "bg-amber-50/60" : ""}>
                     <td className="max-w-md px-3 py-2">
-                      {a.isUrgent && <span className="mr-1 rounded bg-red-600 px-1 text-[10px] font-bold text-white">KHẨN</span>}
+                      {a.isUrgent && <span className="mr-1 inline-flex h-5 items-center rounded-full bg-accent-50 px-2 text-[10px] font-bold text-accent-strong">KHẨN</span>}
                       <Link href={`/Admin/articles/${a.id}`} className="font-medium hover:text-brand">{a.title}</Link>
                     </td>
                     <td className="whitespace-nowrap px-3 py-2 text-gray-600">{a.primaryCat.name}</td>
@@ -46,7 +46,7 @@ export function ReviewQueue({ rows, user, level, error }: { rows: Row[]; user: C
                     <td className={`whitespace-nowrap px-3 py-2 ${overdue ? "font-bold text-red-700" : "text-gray-600"}`}>
                       {formatWaiting(waitingMin)}{overdue && " ⚠ quá hạn"}
                     </td>
-                    <td className="px-3 py-2"><StatusBadge status={a.status} /></td>
+                    <td className="px-4 py-3"><StatusBadge status={a.status} /></td>
                     <td className="whitespace-nowrap px-3 py-2 text-gray-600">{a.holder ?? "—"}</td>
                     <td className="whitespace-nowrap px-3 py-2 text-right">
                       {canClaim ? (

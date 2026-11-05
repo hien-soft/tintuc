@@ -5,7 +5,7 @@ import { Ticker } from "@/components/public/home/Ticker";
 import { MostViewedList } from "@/components/public/MostViewed";
 import { Tabs, type TabPanel } from "@/components/public/Tabs";
 import { TopicBanner } from "@/components/public/TopicBanner";
-import { SectionTitle } from "@/components/public/ui";
+import { DuoBar, SectionTitle, sectionHeadingCls } from "@/components/public/ui";
 import { asLocale, dict } from "@/lib/i18n";
 import {
   getByType,
@@ -122,7 +122,7 @@ export default async function HomePage({ params }: Params) {
     .map((p) => ({ key: p.key, label: p.label, content: tileGrid(p.items) }));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       {/* 1. Tin mới nhất */}
       <Ticker items={ticker} locale={locale} label={t.latest} />
 
@@ -150,7 +150,10 @@ export default async function HomePage({ params }: Params) {
       </div>
 
       {/* 4. Tin thời sự */}
-      {feedPanels.length > 0 && <Tabs panels={feedPanels} title={<h2 className="-mb-0.5 py-1.5 pr-2 text-base font-bold uppercase text-brand">{t.currentNews}</h2>} />}
+      {feedPanels.length > 0 && <Tabs panels={feedPanels} title={<h2 className={sectionHeadingCls}>
+<DuoBar />
+{t.currentNews}
+</h2>} />}
 
       <div className="grid gap-8 lg:grid-cols-12">
         {/* 5. Lưới 13 danh mục */}
@@ -197,8 +200,11 @@ export default async function HomePage({ params }: Params) {
 
       {/* 8. Media */}
       {mediaPanels.length > 0 && (
-        <section className="bg-gray-50 p-4 sm:p-5">
-          <Tabs panels={mediaPanels} title={<h2 className="-mb-0.5 py-1.5 pr-2 text-base font-bold uppercase text-brand">{t.media}</h2>} />
+        <section className="rounded-2xl bg-gray-50 p-5 sm:p-8">
+          <Tabs panels={mediaPanels} title={<h2 className={sectionHeadingCls}>
+<DuoBar />
+{t.media}
+</h2>} />
         </section>
       )}
 
@@ -214,13 +220,13 @@ export default async function HomePage({ params }: Params) {
         {/* 10. Hoạt động của TTVN */}
         <section>
           <SectionTitle title={t.activities} />
-          <div className="rounded border border-gray-200 p-4">
+          <div className="rounded-lg border border-gray-200 bg-white p-5">
             <p className="text-sm text-ink-soft">{t.activitiesNote}</p>
             {SOCIAL_CHANNELS.length > 0 && (
               <ul className="mt-3 flex flex-wrap gap-2">
                 {SOCIAL_CHANNELS.map((c) => (
                   <li key={c.name}>
-                    <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-block rounded bg-brand px-3 py-1 text-xs font-bold text-white hover:bg-brand-dark">
+                    <a href={c.url} target="_blank" rel="noopener noreferrer" className="ds-btn ds-btn--sm">
                       {c.name}
                     </a>
                   </li>
@@ -251,16 +257,16 @@ function PhotoFocus({ items, locale }: { items: Card[]; locale: PublicLocale }) 
   const [lead, ...rest] = items;
   return (
     <div className="grid gap-4 lg:grid-cols-5">
-      <article className="group self-start overflow-hidden lg:col-span-3">
+      <article className="group self-start overflow-hidden rounded-2xl lg:col-span-3">
         <a href={articleUrl(lead, locale)} className="relative block">
           {lead.cover ? (
-            <img src={mediaUrl(lead.cover.key, "stand")} alt={lead.cover.alt ?? lead.title} fetchPriority="high" className="aspect-[4/3] w-full object-cover transition duration-300 group-hover:scale-[1.02]" />
+            <img src={mediaUrl(lead.cover.key, "stand")} alt={lead.cover.alt ?? lead.title} fetchPriority="high" className="aspect-[4/3] w-full object-cover transition duration-300 ease-ds group-hover:scale-[1.03]" />
           ) : (
-            <div className="aspect-[4/3] w-full bg-gray-200" />
+            <div className="aspect-[4/3] w-full bg-grad-soft" />
           )}
-          <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 pt-16 text-white">
-            <span className="mb-1 inline-block rounded bg-brand px-1.5 py-0.5 text-[10px] font-bold uppercase">Ảnh</span>
-            <span className="block text-xl font-bold leading-snug">{lead.title}</span>
+          <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-950/90 via-ink-950/40 to-transparent p-5 pt-20 sm:p-6 sm:pt-24 text-white">
+            <span className="mb-2 inline-flex h-6 items-center rounded-full bg-white/95 px-2.5 text-[11px] font-bold text-brand">Ảnh</span>
+            <span className="block text-xl font-bold leading-snug sm:text-2xl">{lead.title}</span>
           </span>
         </a>
       </article>
@@ -277,11 +283,11 @@ function MegaStoryStrip({ items, locale }: { items: Card[]; locale: PublicLocale
   return (
     <div className="grid gap-4 md:grid-cols-3">
       {items.map((a, i) => (
-        <article key={a.id} className={`group relative overflow-hidden bg-black ${i === 0 ? "md:col-span-2 md:row-span-2" : ""}`}>
+        <article key={a.id} className={`group relative overflow-hidden rounded-2xl bg-navy-950 ${i === 0 ? "md:col-span-2 md:row-span-2" : ""}`}>
           <a href={articleUrl(a, locale)} className="block h-full">
-            {a.cover && <img src={mediaUrl(a.cover.key, i === 0 ? "large" : "stand")} alt={a.cover.alt ?? a.title} loading="lazy" className="aspect-video h-full w-full object-cover opacity-80 transition group-hover:opacity-100" />}
-            <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-4 pt-12 text-white">
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#ffd34d]">Mega Story</span>
+            {a.cover && <img src={mediaUrl(a.cover.key, i === 0 ? "large" : "stand")} alt={a.cover.alt ?? a.title} loading="lazy" className="aspect-video h-full w-full object-cover opacity-80 transition duration-300 ease-ds group-hover:scale-[1.03] group-hover:opacity-100" />}
+            <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/95 to-transparent p-5 pt-14 text-white">
+              <span className="mb-1.5 inline-flex h-6 items-center rounded-full border border-[#FBC531]/40 bg-[#FBC531]/15 px-2.5 text-[11px] font-bold text-[#FFD978]">Mega Story</span>
               <span className={`block font-bold leading-snug ${i === 0 ? "text-2xl" : "text-base"}`}>{a.title}</span>
             </span>
           </a>

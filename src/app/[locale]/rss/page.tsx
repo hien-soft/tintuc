@@ -20,15 +20,15 @@ export default async function RssListPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-3xl">
       <Breadcrumb items={[{ label: t.home, href: `/${locale}` }, { label: t.rss }]} />
-      <h1 className="mb-3 border-b-2 border-brand pb-2 text-2xl font-bold text-brand sm:text-3xl">{t.rssFeeds}</h1>
+      <h1 className="mb-3 text-[28px] font-bold leading-tight tracking-tight text-ink sm:text-[34px]">{t.rssFeeds}</h1>
       <p className="mb-5 text-sm text-ink-soft">{t.rssIntro}</p>
-      <ul className="divide-y divide-gray-100 rounded border border-gray-200">
+      <ul className="divide-y divide-gray-100 overflow-hidden rounded-lg border border-gray-200 bg-white">
         {rows.map((r) => (
           <li key={r.path} className="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <span className="font-semibold">{r.name}</span>
             <a href={r.path} className="inline-flex items-center gap-2 break-all text-sm text-brand hover:underline">
               <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" className="shrink-0">
-                <rect width="24" height="24" rx="4" fill="#f26522" />
+                <rect width="24" height="24" rx="4" fill="#FF8A3D" />
                 <circle cx="6.5" cy="17.5" r="2" fill="#fff" />
                 <path d="M4.5 10.5a9 9 0 0 1 9 9M4.5 4.5a15 15 0 0 1 15 15" stroke="#fff" strokeWidth="2.5" fill="none" />
               </svg>
