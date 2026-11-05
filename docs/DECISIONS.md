@@ -69,3 +69,6 @@ Ghi lại những chỗ đặc tả chưa rõ hoặc phải điều chỉnh khi 
 - CMS theo Jobie: sidebar gradient navy, mục đang chọn là "tab" nền canvas khuyết vào nội dung; header nền canvas; thẻ KPI màu đặc; bảng trong `.ds-card--dash`; trang đăng nhập nền gradient navy. Màu trạng thái bài lấy từ nhóm màu ngữ nghĩa của design system.
 - Chưa áp dụng: bộ icon Phosphor (giữ SVG nội tuyến hiện có để không thêm phụ thuộc/CDN), lịch chọn ngày và menu chọn kiểu iOS (cần JS riêng của design system), thang chữ điện thoại tự động `ds-mobile-type.js`.
 - Biểu tượng logo vẽ bằng màu đặc + lớp sáng thay cho `<linearGradient id>`: logo xuất hiện nhiều lần (một bản bị ẩn trên mobile), id trùng làm gradient biến mất.
+
+## Bỏ menu 13 chủ đề ở header
+- Theo yêu cầu, header chỉ còn logo lớn; dải menu 13 chủ đề bên phải logo (mục 3.2 của đặc tả) đã bỏ. Các danh mục vẫn truy cập được qua menu điện thoại (nút ☰) và 4 cột ở footer.

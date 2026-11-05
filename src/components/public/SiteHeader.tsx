@@ -30,22 +30,11 @@ export async function SiteHeader({ locale }: { locale: PublicLocale }) {
         </div>
       </div>
 
-      {/* Header: logo lớn + menu 13 chủ đề */}
+      {/* Header: logo lớn (menu 13 chủ đề đã bỏ theo yêu cầu — vẫn có trong menu mobile và footer) */}
       <div className="mx-auto flex max-w-container items-center gap-6 px-4 py-5 sm:px-6">
         <Link href={`/${locale}`} aria-label={SITE_NAME} className="shrink-0">
           <Logo />
         </Link>
-        <nav aria-label={t.menu} className="hidden flex-1 lg:block">
-          <ul className="flex flex-wrap justify-end gap-x-1 gap-y-1 text-[13px] font-semibold text-ink-soft">
-            {menu.map((c) => (
-              <li key={c.id}>
-                <Link href={categoryUrl(c, locale)} className="block rounded-full px-2.5 py-1 transition-colors hover:bg-brand-50 hover:text-brand">
-                  {c.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </div>
 
       {/* Thanh điều hướng chính */}
