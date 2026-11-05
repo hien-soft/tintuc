@@ -9,7 +9,21 @@ import path from "path";
 import fs from "fs";
 import net from "net";
 
-export const PG_PORT = 5432;
+/** Cổng lấy từ DATABASE_URL (đọc .env nếu cần), mặc định 5432 — đổi cổng khi 5432 đã bị Postgres khác chiếm. */
+export function pgPort(): number {
+  if (!process.env.DATABASE_URL) {
+    try {
+      process.loadEnvFile(".env");
+    } catch {
+      // không có .env
+    }
+  }
+  try {
+    return Number(new URL(process.env.DATABASE_URL ?? "").port) || 5432;
+  } catch {
+    return 5432;
+  }
+}
 const dataDir = path.resolve("storage/pgdata");
 
 function pgCtlPath(): string {
@@ -21,6 +35,7 @@ function pgCtlPath(): string {
 
 /** Khởi tạo (lần đầu), bật Postgres nếu chưa chạy và tạo database `news`. Postgres chạy nền, sống tiếp sau khi hàm trả về. */
 export async function startPostgres(): Promise<void> {
+  const PG_PORT = pgPort();
   const fresh = !fs.existsSync(path.join(dataDir, "PG_VERSION"));
   const pg = new EmbeddedPostgres({ databaseDir: dataDir, user: "news", password: "news", port: PG_PORT, persistent: true, initdbFlags: ["--encoding=UTF8", "--locale=C"] });
   if (fresh) await pg.initialise();
